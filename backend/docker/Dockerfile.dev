@@ -1,6 +1,6 @@
-# syntax=docker/dockerfile:1
-
 ## Creates a Docker image for Spring Boot Application that can be debugged remotely
+
+# Base Image
 FROM maven:3.8.4-jdk-11-slim as BUILD
 
 # Set the current working directory inside the image
