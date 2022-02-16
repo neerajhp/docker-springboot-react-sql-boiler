@@ -3,7 +3,7 @@ version: "3.8"
 services:
   frontend:
     container_name: frontend
-    image: #NAME OF FRONTEND DOCKER IMAGE
+    # image: #NAME OF FRONTEND DOCKER IMAGE
     build:
       context: ../frontend
       dockerfile: docker/Dockerfile.dev
@@ -11,17 +11,16 @@ services:
       - ../frontend:/app/
     ports:
       - 3000:3000
-    environment:
-      #FRONTEND ENVIRONMENT VARIABLES
-    entrypoint: ["sh", "docker/dev.sh"]
+    # environment:
+    #   #FRONTEND ENVIRONMENT VARIABLES
     networks:
       - frontend
 
   backend:
     container_name: backend
-    image: #NAME OF BACKEND DOCKER IMAGE
+    # image: #NAME OF BACKEND DOCKER IMAGE
     build:
-      context: ../backend/app
+      context: ../backend
       dockerfile: docker/Dockerfile.dev
     ports:
       - 8080:8080
@@ -29,11 +28,10 @@ services:
     environment:
       MYSQL_HOST: mysql
       MYSQL_USER: root
-      MYSQL_PASSWORD: #PASSWORD FOR DB ROOT ACCOUNT
-      MYSQL_DB: #NAME OF SQL DATABASE
+      MYSQL_PASSWORD: demo #PASSWORD FOR DB ROOT ACCOUNT
+      MYSQL_DB: demo #NAME OF SQL DATABASE
     volumes:
       - ../backend/app:/app/
-    entrypoint: ["sh", "docker/dev.sh"]
     depends_on:
       - db
     networks:
@@ -41,15 +39,15 @@ services:
       - frontend
 
   db:
-    container_name: db
+    container_name: sql-db
     image: mysql:5.7
     ports:
       - 3307:3306
-    volumes:
-      - ../data/db:/var/lib/mysql
+    # volumes:
+    #   - ../data/db:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: #PASSWORD FOR ROOT ACCOUNT
-      MYSQL_DATABASE: #NAME OF SQL DATABASE
+      MYSQL_ROOT_PASSWORD: demo #PASSWORD FOR ROOT ACCOUNT
+      MYSQL_DATABASE: demo #NAME OF SQL DATABASE
     networks:
       - backend
 

@@ -1,1 +1,1 @@
-docker compose -f ./docker/docker-compose.dev.yml -p neighbourhoodgems-app-dev up 
+docker compose -f ./docker/docker-compose.dev.yml -p boiler-app up 

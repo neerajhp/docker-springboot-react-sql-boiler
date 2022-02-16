@@ -7,14 +7,14 @@ FROM maven:3.8.4-jdk-11-slim as BUILD
 WORKDIR /app
 
 # Copy maven wrapper and dependencies
-COPY .mvn/ .mvn
-COPY mvnw pom.xml ./
+COPY ../app/*/.mvn/ .mvn
+COPY ../app/*/mvnw ../app/*/pom.xml ./
 
 # Run maven and install dependencies into image
 RUN mvn dependency:go-offline -B
 
 # Copy the project source
-COPY src ./src
+COPY ../app/*/src ./src
 
 # Run Command
-ENTRYPOINT ["sh", "docker/entrypoint.sh"]
+ENTRYPOINT ["sh", "./entrypoint.sh"]
