@@ -1,0 +1,57 @@
+version: "3.8"
+
+services:
+  frontend:
+    container_name: frontend
+    # image: #NAME OF FRONTEND DOCKER IMAGE
+    build:
+      context: ../frontend
+      dockerfile: docker/Dockerfile.dev
+    volumes:
+      - ../frontend:/app/
+    ports:
+      - 3000:3000
+    # environment:
+    #   #FRONTEND ENVIRONMENT VARIABLES
+    networks:
+      - frontend
+
+  backend:
+    container_name: backend
+    # image: #NAME OF BACKEND DOCKER IMAGE
+    build:
+      context: ../backend
+      dockerfile: docker/Dockerfile.dev
+    ports:
+      - 8080:8080
+      - 5005:5005
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: root
+      MYSQL_PASSWORD: demo #PASSWORD FOR DB ROOT ACCOUNT
+      MYSQL_DB: demo #NAME OF SQL DATABASE
+    volumes:
+      - ../backend/app:/app/
+    depends_on:
+      - db
+    networks:
+      - backend
+      - frontend
+
+  db:
+    container_name: sql-db
+    image: mysql:5.7
+    ports:
+      - 3307:3306
+    # volumes:
+    #   - ../data/db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: demo #PASSWORD FOR ROOT ACCOUNT
+      MYSQL_DATABASE: demo #NAME OF SQL DATABASE
+    networks:
+      - backend
+
+# Networks to be created to facilitate communication between containers
+networks:
+  backend:
+  frontend:

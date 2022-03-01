@@ -1,0 +1,20 @@
+## Creates a Docker image for Spring Boot Application that can be debugged remotely
+
+# Base Image
+FROM maven:3.8.4-jdk-11-slim as BUILD
+
+# Set the current working directory inside the image
+WORKDIR /app
+
+# Copy maven wrapper and dependencies
+COPY ../app/*/.mvn/ .mvn
+COPY ../app/*/mvnw ../app/*/pom.xml ./
+
+# Run maven and install dependencies into image
+RUN mvn dependency:go-offline -B
+
+# Copy the project source
+COPY ../app/*/src ./src
+
+# Run Command
+ENTRYPOINT ["sh", "./entrypoint.sh"]
